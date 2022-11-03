@@ -1,0 +1,16 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'roboto', sans-serif;
+}
+.item-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    margin: 0 20rem;
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+  }

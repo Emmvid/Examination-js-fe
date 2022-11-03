@@ -44,20 +44,26 @@ let getBeer = fetch(url)
      itemContainer.innerHTML = output;
   });
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', (event) => {
+    console.log("Domloaded")
     addListeners()
+    
+
 })
 
-  function addListeners() {
-    let cart = document.querySelectorAll('.add-to-cart')
+  function addListeners(beerID) {
+    let cart = document.getElementsByClassName('add-to-cart')
 
     console.log(cart)
       for(let i=0; i <cart.length; i++) {
-     cart[i].addEventListener('click', () => {
-        console.log("added to cart")
+     cart[i].addEventListener('click', (event) => {
+        console.log(event.target)
+        
      })
    }
+   console.log(this.id)
  }
+addListeners();
 
   function cartNumbers() {
     let productNumbers = localStorage.getItem("cartNumbers")

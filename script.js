@@ -15,6 +15,7 @@ let getBeer = fetch(url)
       let img = getBeer[i].image_url;
       let name = getBeer[i].name;
       let description = getBeer[i].description;
+      let alcohol = getBeer[i].abv;
      //beers[getBeer[i].id]= {
      // "name":getBeer[i].name
       //}
@@ -31,7 +32,8 @@ let getBeer = fetch(url)
         <div class="card-body">
           <h5 class="card-title"> ${name + " " + beerID}</h5>
           <p class="card-text">${description}</p>
-          <div id=${beerID} onClick="addBeer(this.id)" class=" add-to-cart btn btn-primary mt-2">Add to cart</div>
+          <p class="card-text"> Alchol amount: ${alcohol} </p>
+          <div id=${beerID} class="add-to-cart btn btn-primary mt-2">Add to cart</div>
           <a href="#" class="btn btn-primary mt-2">More information</a> 
         </div>
       </div>
@@ -41,12 +43,27 @@ let getBeer = fetch(url)
     }
      itemContainer.innerHTML = output;
   });
-  
-  for(let i=0; i <cart.length; i++) {
-    console.log("my loop")
-  }
-//   function addBeer (beerID) {
-   
+
+document.addEventListener('DOMContentLoaded', () => {
+    addListeners()
+})
+
+  function addListeners() {
+    let cart = document.querySelectorAll('.add-to-cart')
+
+    console.log(cart)
+      for(let i=0; i <cart.length; i++) {
+     cart[i].addEventListener('click', () => {
+        console.log("added to cart")
+     })
+   }
+ }
+
+  function cartNumbers() {
+    let productNumbers = localStorage.getItem("cartNumbers")
+    console.log(productNumbers)
+    localStorage.setItem("cartNumbers", 1)
+ }
     
 //    console.log(beers)
 
@@ -60,4 +77,3 @@ let getBeer = fetch(url)
 //     //JSON.parse() för att göra det tillbaka till ett objekt i själva kassan
 //   }
 
-    

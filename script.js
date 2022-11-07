@@ -1,63 +1,54 @@
 "use strict";
-const url = "https://api.punkapi.com/v2/beers?per_page=20";
-const itemContainer = document.querySelector(".item-container");
+const url = "https://api.punkapi.com/v2/beers?20";
+let shoppingCart = document.getElementsByClassName(".shopping-cart")
 
-let output = "";
+let beers = [];
+let cart = (localStorage.getItem("data")) || [];
 
-let beers =[]
-
-
-let getBeer = fetch(url)
-  .then((res) => res.json())
-  .then((getBeer) => {
-    for (let i = 0; i < 20; i++) {
-      let beerID = getBeer[i].id;
-      let img = getBeer[i].image_url;
-      let name = getBeer[i].name;
-      let description = getBeer[i].description;
-     //beers[getBeer[i].id]= {
-     // "name":getBeer[i].name
-      //}
-      beers[i] = {
-       "name": getBeer[i].name, 
-       "description": getBeer[i].description,
+document.addEventListener("DOMContentLoaded", (event) => {
+  fetch(url)
+  .then(res => {return res.json()})
+  .then(data => {
+    console.log(data);
+    for(let i=0; i < data.length; i++){
+      beers.push(data[i])
     }
-    
-
-    output += `
-        <div class="card-group">
-        <div class="card mt-4 ml-4 p-3" style="width: 18rem;  ">
-        <img class="card-img-top" src="${img}" style="height: 200px; width: 80px; align-items: center;" alt="Picture of the beer">
-        <div class="card-body">
-          <h5 class="card-title"> ${name + " " + beerID}</h5>
-          <p class="card-text">${description}</p>
-          <div id=${beerID} onClick="addBeer(this.id)" class=" add-to-cart btn btn-primary mt-2">Add to cart</div>
-          <a href="#" class="btn btn-primary mt-2">More information</a> 
-        </div>
+    let cardContainer = document.querySelector("#cardContainer")
+    let cardContent = `<div class="row my-2">`
+    for(let i = 0; i < beers.length; i++){
+      if( i % 3 == 0 && i > 0)
+      {
+        console.log(i)
+        cardContent += `</div> <br>
+        <div class"row my-2">`
+      }
+      cardContent += `<div class="card-group">
+      <div class="card mt-4 ml-4 p-3" style="width: 18rem;  ">
+      <img class="card-img-top" src="${beers[i].image_url}" style="height: 200px; width: 80px; align-items: center;" alt="Picture of the beer">
+      <div class="card-body">
+        <h5 class="card-title"> ${beers[i].name + " " + i}</h5>
+        <p class="card-text">${beers[i].description}</p>
+        <p class="card-text"> Alchol amount: ${beers[i].abv} % </p>
+        <h6 class="card-subtitle text-muted text-center">${Math.floor(Math.random() * (35 - 20) + 20)}:-</h6>
+        <div id=${i} class="add btn btn-primary mt-2">Add to cart</div>
       </div>
-      </div>
-      
-        `;
+    </div>
+    </div>`
     }
-     itemContainer.innerHTML = output;
-  });
-  
-  for(let i=0; i <cart.length; i++) {
-    console.log("my loop")
-  }
-//   function addBeer (beerID) {
-   
-    
-//    console.log(beers)
+    cardContainer.innerHTML += cardContent;
+  })
+  .then(() => {
+    let addButtons = document.querySelectorAll(".add")
+    addButtons.forEach(btn => {
+      btn.addEventListener('click', (event) =>{
+        cart.push(beers[event.target.id]);
+        console.log(cart)
+        localStorage.setItem('cart' , JSON.stringify(cart))
+        let itemInStorage = localStorage.getItem('cart');
+        console.log('items In Storage ', JSON.parse(itemInStorage));
 
-//   // console.log(beers[parseInt(beerID)])
-// //    cart.push(beers[parseInt(beerID)])
-   
-// //    JSON.stringify(beers)
-// //  console.log(Object.keys(beers));
-   
-//     //JSON.stringify --> för att få unikt id i själva funktionen
-//     //JSON.parse() för att göra det tillbaka till ett objekt i själva kassan
-//   }
-
-    
+      })
+    })
+  })
+ 
+})

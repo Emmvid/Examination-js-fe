@@ -27,8 +27,9 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body onload="checkAge()">
-    <header class="container-fluid p-2 bg-dark text-white text-center">
-      <h2 class="display-2">Beer Shop</h2>
+    <header class="container-fluid p-2 text-white text-center">
+      <h2 class="display-2">Beer match</h2>
+      <h3> Find the perfect beer to match with your food!</h3>
       <button
         class="btn btn-primary wish-list"
         type="button"
@@ -36,8 +37,11 @@
         data-bs-target="#offcanvasBottom"
         aria-controls="offcanvasBottom"
       >
-        Show your Wishlist <span> 0</span>
+        Show your Wishlist
       </button>
+      <button title="back-to-top" type="button" class="btn btn-info btn-floating btn-lg" id="btn-back-to-top" >
+        <em class="fas fa-arrow-up">  &#8593; </em>
+    </button>
     </header>
     <main></main>
     <div
@@ -48,7 +52,7 @@
     >
       <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasBottomLabel">
-          All I want for christmas is:
+          Here's all you wish for:
         </h5>
         <button
           type="button"

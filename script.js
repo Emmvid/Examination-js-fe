@@ -3,9 +3,10 @@ const main = document.querySelector("main");
 const loadMoreBeer = document.querySelector("#load-beer");
 const url = "https://api.punkapi.com/v2/beers/";
 let wishList;
+let productNumbers = 1;
 let beerPrice = Math.floor(Math.random() * (35 - 20) + 20);
 
-if (localStorage.getItem("wishList")){
+if (localStorage.getItem("wishList")) {
   wishList = JSON.parse(localStorage.getItem("wishList"));
 } else {
   wishList = [];
@@ -13,41 +14,39 @@ if (localStorage.getItem("wishList")){
 
 function getBeer(id) {
   fetch(url + id)
-  .then((res) => res.json())
-  .then((data)=> displayBeer(data[0]));
+    .then((res) => res.json())
+    .then((data) => displayBeer(data[0]));
 }
+
 function displayBeer(data) {
   const article = document.createElement("article");
   article.classList.add("card");
-  article.innerHTML =` <div class="card row-md-2">
-  <img src="${data.image_url}" style="height: 200px; width: 80px; align-items: center;" alt="Picture of the beer">
+  article.innerHTML = `
+  <img class="image-html" src="${data.image_url}" style="height: 200px; align-items: center;" alt="Picture of the beer">
   <h2 class="card-title text-center">${data.name}</h2>
   <h4 class="card-text py-1 text-muted">${data.tagline}</h4>
-  <p class="card-text py-1"> ${data.description}
-  <h6 class="card-subtitle text-muted text-center">${beerPrice}:-</h6>
-  <p class="card-text py-1">Alcohol: ${data.abv} % </p>
-
-</div>
-</div>
-</div> `;
+  <p class="card-text py-1"> Food-pairing: ${data.food_pairing} </p>
+  <p class="card-text py-1">Alcohol: ${data.abv} % </p> 
+  <h6 class="card-subtitle text-muted ">Price: ${beerPrice}:-</h6>
+  `;
 
   const button = document.createElement("button");
   button.classList.add("btn", "btn-info");
-  button.innerText= "Add to Wishlist";
-  button.onclick = function (){
+  button.innerText = "Add to Wishlist";
+  button.onclick = function () {
     wishList.push(data);
     localStorage.setItem("wishList", JSON.stringify(wishList));
     displayWishList();
-  }
-  article.querySelector(".card").append(button);
+  };
+  article.append(button);
   main.append(article);
 }
 
 function displayWishList() {
   let list = document.querySelector(".offcanvas-body");
-  list.innerHTML= "";
+  list.innerHTML = "";
 
-  for(let beer of wishList){
+  for (let beer of wishList) {
     const addText = document.createElement("p");
     const removeItem = document.createElement("button");
     addText.innerHTML = `<img src="${beer.image_url}" style="height: 100px; width: 40px;" alt="picture of beer"> ${beer.name} Price: ${beerPrice}:- `;
@@ -57,49 +56,72 @@ function displayWishList() {
   </svg>`;
     removeItem.classList.add("removeButton");
     addText.appendChild(removeItem);
-  removeItem.addEventListener("click", () => {
-    removeItem.parentElement.remove();
-    wishList.splice(wishList.indexOf(beer), 1);
-    localStorage.setItem("wishList", JSON.stringify(wishList))
-  });
-  }
-  function cartNumbers(wishList) {
-  
-    let productNumbers = localStorage.getItem("cartNumbers");
-    productNumbers = parseInt(productNumbers);
-    if (productNumbers) {
-      localStorage.setItem("cartNumbers", productNumbers + 1);
-      document.querySelector(".btn span").textContent = productNumbers + 1;
-    } else {
-      localStorage.setItem("cartNumbers", 1);
-      document.querySelector(".btn span").textContent = 1;
-    } 
-  }
-  function reloadCartNumbers(wishList) {
-    let productNumbers = localStorage.getItem("cartNumbers");
-  
-    if (productNumbers) {
+    removeItem.addEventListener("click", () => {
+      removeItem.parentElement.remove();
+      wishList.splice(wishList.indexOf(beer), 1);
+      localStorage.setItem("wishList", JSON.stringify(wishList));
+      localStorage.setItem("cartNumbers", productNumbers --);
+      if(productNumbers <= 0){
+        productNumbers= 0;
+      }
+      console.log(productNumbers)
       document.querySelector(".btn span").textContent = productNumbers;
-    }
+    });
   }
-  cartNumbers(wishList);
-  reloadCartNumbers(wishList);
+  
+  cartNumbers();
+  reloadCartNumbers();
+}
+
+function cartNumbers() {
+  productNumbers = localStorage.getItem("cartNumbers");
+  productNumbers = Number(productNumbers);
+
+  console.log(productNumbers);
+  localStorage.setItem("cartNumbers", productNumbers + 1);
+  document.querySelector(".btn span").textContent = productNumbers + 1;
+   if (productNumbers) {
+     localStorage.setItem("cartNumbers", productNumbers + 1);
+     document.querySelector(".btn span").textContent = productNumbers + 1;
+   } else {
+     localStorage.setItem("cartNumbers", 1);
+     document.querySelector(".btn span").textContent = 1;
+  }
+}
+
+function reloadCartNumbers() {
+  productNumbers = localStorage.getItem("cartNumbers");
+
+  if (productNumbers) {
+    document.querySelector(".btn span").textContent = productNumbers;
+  }
 }
 
 function showMoreBeer(start, end) {
-  for(let i= start; i< end; i++) {
+  for (let i = start; i < end; i++) {
     getBeer(i);
   }
 }
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  showMoreBeer(1, 21)
-})
+  showMoreBeer(1, 21);
+});
 
 let loadedAmount = 20;
 
 loadMoreBeer.onclick = function () {
   if (loadedAmount >= 100) return;
-  showMoreBeer(loadedAmount + 1, loadedAmount +21)
-  loadedAmount +=20
-}
+  showMoreBeer(loadedAmount + 1, loadedAmount + 21);
+  loadedAmount += 20;
+  
+};
+
+//  function checkAge() {
+//    let age = prompt("How old are you?")
+//    if (age < 18) {
+//      alert("You can't buy alcohol")
+//    }
+//    else {
+//      alert("Have fun browsing good beer!")
+//    }
+//  }

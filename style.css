@@ -1,21 +1,48 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'roboto', sans-serif;
 }
-.item-container {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
-    margin: 0 20rem;
-  }
-  .card {
-    display: flex;
-    flex-direction: column;
-  }
 
-  #load-more {
-    padding:16px;
-    align-self: center;
-  }
+main {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(225px, 1fr) ) ;
+  gap: 1rem;
+  justify-content: center;
+  margin: 5rem;
+  margin-top: 2rem;
+}
+
+.card {
+  width: 250px;
+  
+  padding: 10px;
+}
+
+.card > img {
+  width: 100%;
+  object-fit: contain;
+}
+
+.card > button{
+  margin-top: auto;  
+}
+
+.card > h2 {
+  font-size: 24px;
+}
+
+.card > h4 {
+  font-size: 16px;
+}
+
+#load-beer {
+  width:100%;
+ margin-inline: auto;
+}
+
+.wish-list {
+  float:right;
+  z-index: 5;
+}
